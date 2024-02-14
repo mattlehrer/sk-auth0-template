@@ -3,9 +3,7 @@ import { AUTH0_DOMAIN } from '$env/static/private';
 import { OAuth2RequestError } from 'arctic';
 import { generateId } from 'lucia';
 import type { RequestEvent } from '@sveltejs/kit';
-import { db } from '$lib/server/db';
-import { userTable } from '$lib/server/schema';
-import { eq } from 'drizzle-orm';
+import { getUserByAuth0Id, insertUser } from '$lib/server/handlers';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const code = event.url.searchParams.get('code');
@@ -26,9 +24,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		});
 		const auth0User: Auth0User = await auth0UserResponse.json();
 		console.log({ auth0User });
-		const existingUser = await db.query.userTable.findFirst({
-			where: eq(userTable.auth0Id, auth0User.sub),
-		});
+		const existingUser = await getUserByAuth0Id(auth0User.sub);
 
 		if (existingUser) {
 			const session = await lucia.createSession(existingUser.id, {});
@@ -39,7 +35,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			});
 		} else {
 			const userId = generateId(15);
-			await db.insert(userTable).values({
+			await insertUser({
 				id: userId,
 				auth0Id: auth0User.sub,
 				email: auth0User.email,
