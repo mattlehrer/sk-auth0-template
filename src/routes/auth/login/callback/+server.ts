@@ -43,6 +43,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 				id: userId,
 				auth0Id: auth0User.sub,
 				email: auth0User.email,
+				emailVerified: auth0User.email_verified,
 			});
 			const session = await lucia.createSession(userId, {});
 			const sessionCookie = lucia.createSessionCookie(session.id);
@@ -73,7 +74,6 @@ export async function GET(event: RequestEvent): Promise<Response> {
 }
 
 interface Auth0User {
-	id: string;
 	sub: string;
 	email: string;
 	email_verified: boolean;
