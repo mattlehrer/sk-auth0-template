@@ -6,10 +6,10 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	css: {
 		postcss: {
-			plugins: [postcssCustomMedia()]
-		}
+			plugins: [postcssCustomMedia()],
+		},
 	},
 	test: {
-		include: ['src/**/*.{test,spec}.{js,ts}']
-	}
+		include: ['src/**/*.{test,spec}.{js,ts}'],
+	},
 });

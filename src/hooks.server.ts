@@ -16,14 +16,14 @@ export const handle: Handle = async ({ event, resolve }) => {
 		// you can use 'as any' too
 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
 			path: '.',
-			...sessionCookie.attributes
+			...sessionCookie.attributes,
 		});
 	}
 	if (!session) {
 		const sessionCookie = lucia.createBlankSessionCookie();
 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
 			path: '.',
-			...sessionCookie.attributes
+			...sessionCookie.attributes,
 		});
 	}
 	event.locals.user = user;

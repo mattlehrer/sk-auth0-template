@@ -7,7 +7,7 @@ import { dev } from '$app/environment';
 export const GET: RequestHandler = async ({ cookies }) => {
 	const state = generateState();
 	const url = await auth0.createAuthorizationURL(state, {
-		scopes: ['profile', 'email']
+		scopes: ['profile', 'email'],
 	});
 
 	cookies.set('auth0_oauth_state', state, {
@@ -15,7 +15,7 @@ export const GET: RequestHandler = async ({ cookies }) => {
 		secure: !dev,
 		httpOnly: true,
 		maxAge: 60 * 10,
-		sameSite: 'lax'
+		sameSite: 'lax',
 	});
 
 	redirect(302, url.toString());
