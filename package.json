@@ -42,6 +42,8 @@
   },
   "type": "module",
   "dependencies": {
+    "@planetscale/database": "^1.16.0",
+    "drizzle-orm": "^0.29.3",
     "open-props": "^1.6.18"
   }
 }
