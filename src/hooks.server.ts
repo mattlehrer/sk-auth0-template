@@ -1,7 +1,12 @@
 import { lucia } from '$lib/server/auth';
+import { logger, transformEvent } from '$lib/server/logger';
 import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
+	const startTimer = Date.now();
+	event.locals.startTimer = startTimer;
+	event.locals.requestId = crypto.randomUUID();
+
 	const sessionId = event.cookies.get(lucia.sessionCookieName);
 	if (!sessionId) {
 		event.locals.user = null;
@@ -28,5 +33,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 	event.locals.user = user;
 	event.locals.session = session;
+	const response = await resolve(event);
+	logger.info({ status: response.status, ...transformEvent(event) });
 	return resolve(event);
 };
