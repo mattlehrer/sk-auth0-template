@@ -5,6 +5,7 @@ import { AUTH0_DOMAIN, AUTH0_CLIENT_ID, AUTH0_CLIENT_SECRET } from '$env/static/
 import { DrizzleMySQLAdapter } from '@lucia-auth/adapter-drizzle';
 import { db } from './db';
 import { sessionTable, userTable } from './schema';
+import { baseUrl } from '$lib/config';
 
 const adapter = new DrizzleMySQLAdapter(db, sessionTable, userTable);
 
@@ -41,5 +42,5 @@ export const auth0 = new Auth0(
 	AUTH0_DOMAIN,
 	AUTH0_CLIENT_ID,
 	AUTH0_CLIENT_SECRET,
-	'http://localhost:5173/auth/login/callback',
+	`${baseUrl}/auth/login/callback`,
 );
